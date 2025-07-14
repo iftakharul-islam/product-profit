@@ -4,8 +4,8 @@
  * Description: Calculates product benefits, monthly profits, and provides detailed financial reports for WooCommerce stores.
  * Version: 1.0
  * Author: ifatwp
- * Author URI: https://ifatwp.com
- * Text Domain: profit-loss-report
+ * Author URI:https://profiles.wordpress.org/webxpart/
+ * Text Domain: product-profit
  * License: GPL2
  */
 
@@ -40,8 +40,8 @@ class WooCommerce_Benefit_Calculator {
     public function register_reports_submenu() {
         add_submenu_page(
             'woocommerce',
-            __('Profit/Loss Report', 'profit-loss-report'),
-            __('Profit/Loss Report', 'profit-loss-report'),
+            __('Profit/Loss Report', 'product-profit'),
+            __('Profit/Loss Report', 'product-profit'),
             'manage_woocommerce',
             'benefit-reports',
             'render_benefit_reports_page',
@@ -51,9 +51,9 @@ class WooCommerce_Benefit_Calculator {
     public function add_buy_price_field() {
         woocommerce_wp_text_input([
             'id' => '_buy_price',
-            'label' => __('Buy Price', 'profit-loss-report'),
+            'label' => __('Buy Price', 'product-profit'),
             'desc_tip' => true,
-            'description' => __('Enter the cost price of the product.', 'profit-loss-report'),
+            'description' => __('Enter the cost price of the product.', 'product-profit'),
         ]);
     }
 
@@ -82,7 +82,7 @@ function send_profit_summary_email() {
 
     $benefit_data = calculate_benefit_report($start_date, $end_date);
     $email_body = sprintf(
-        __("Here is your profit summary for the period %s to %s:\n\nTotal Sales: %s\nTotal Buy Price: %s\nTotal Profit: %s", 'profit-loss-report'),
+        __("Here is your profit summary for the period %s to %s:\n\nTotal Sales: %s\nTotal Buy Price: %s\nTotal Profit: %s", 'product-profit'),
         $start_date,
         $end_date,
         wc_price($benefit_data['total_sales']),
@@ -93,7 +93,7 @@ function send_profit_summary_email() {
 
     wp_mail(
         get_option('admin_email'),
-        __('Weekly Profit Summary', 'profit-loss-report'),
+        __('Weekly Profit Summary', 'product-profit'),
         $email_body,
         $headers
     );

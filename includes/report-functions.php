@@ -38,15 +38,15 @@ function render_benefit_reports_page() {
 
     ?>
     <div class="wrap">
-        <h1><?php esc_html_e('Profit Loss Report', 'profit-loss-report'); ?></h1>
+        <h1><?php esc_html_e('Profit Loss Report', 'product-profit'); ?></h1>
         <form method="get" action="" style="margin: 10px 0px;">
             <input type="hidden" name="page" value="benefit-reports">
-            <label for="start_date"><?php esc_html_e('Start Date', 'profit-loss-report'); ?></label>
+            <label for="start_date"><?php esc_html_e('Start Date', 'product-profit'); ?></label>
             <input type="date" name="start_date" value="<?php echo esc_attr($start_date); ?>" required>
-            <label for="end_date"><?php esc_html_e('End Date', 'profit-loss-report'); ?></label>
+            <label for="end_date"><?php esc_html_e('End Date', 'product-profit'); ?></label>
             <input type="date" name="end_date" value="<?php echo esc_attr( $end_date); ?>" required>
             <select name="category">
-                <option value="all"><?php esc_html_e('All Categories', 'profit-loss-report'); ?></option>
+                <option value="all"><?php esc_html_e('All Categories', 'product-profit'); ?></option>
                 <?php
                 $categories = get_terms(['taxonomy' => 'product_cat', 'hide_empty' => true]);
                 foreach ($categories as $category) {
@@ -54,22 +54,22 @@ function render_benefit_reports_page() {
                 }
                 ?>
             </select>
-            <label for="sort_by"><?php esc_html_e('Sort By', 'profit-loss-report'); ?></label>
+            <label for="sort_by"><?php esc_html_e('Sort By', 'product-profit'); ?></label>
             <select name="sort_by">
-                <option <?php echo $sort_by == 'name' ? 'selected':''; ?> value="name"><?php esc_html_e('Product Name', 'profit-loss-report'); ?></option>
-                <option <?php echo $sort_by == 'sales' ? 'selected':''; ?> value="sales"><?php esc_html_e('Total Sales', 'profit-loss-report'); ?></option>
-                <option <?php echo $sort_by == 'buy_price' ? 'selected':''; ?> value="buy_price"><?php esc_html_e('Total Buy Price', 'profit-loss-report'); ?></option>
-                <option <?php echo $sort_by == 'name' ? 'selected':''; ?> value="benefit"><?php esc_html_e('Profit', 'profit-loss-report'); ?></option>
-                <option <?php echo $sort_by == 'quantity' ? 'selected':''; ?> value="quantity"><?php esc_html_e('Quantity Sold', 'profit-loss-report'); ?></option>
+                <option <?php echo $sort_by == 'name' ? 'selected':''; ?> value="name"><?php esc_html_e('Product Name', 'product-profit'); ?></option>
+                <option <?php echo $sort_by == 'sales' ? 'selected':''; ?> value="sales"><?php esc_html_e('Total Sales', 'product-profit'); ?></option>
+                <option <?php echo $sort_by == 'buy_price' ? 'selected':''; ?> value="buy_price"><?php esc_html_e('Total Buy Price', 'product-profit'); ?></option>
+                <option <?php echo $sort_by == 'name' ? 'selected':''; ?> value="benefit"><?php esc_html_e('Profit', 'product-profit'); ?></option>
+                <option <?php echo $sort_by == 'quantity' ? 'selected':''; ?> value="quantity"><?php esc_html_e('Quantity Sold', 'product-profit'); ?></option>
             </select>
-            <label for="order"><?php esc_html_e('Order', 'profit-loss-report'); ?></label>
+            <label for="order"><?php esc_html_e('Order', 'product-profit'); ?></label>
             <select name="order">
-                <option value="asc"><?php esc_html_e('Ascending', 'profit-loss-report'); ?></option>
-                <option value="desc"><?php esc_html_e('Descending', 'profit-loss-report'); ?></option>
+                <option value="asc"><?php esc_html_e('Ascending', 'product-profit'); ?></option>
+                <option value="desc"><?php esc_html_e('Descending', 'product-profit'); ?></option>
             </select>
-            <button type="submit" class="button button-primary"><?php esc_html_e('Generate Report', 'profit-loss-report'); ?></button>
-            <button type="submit" name="profit_report_export_csv" value="summary" class="button"><?php esc_html_e('Export Summary CSV', 'profit-loss-report'); ?></button>
-            <button type="submit" name="profit_report_export_csv" value="detailed" class="button"><?php esc_html_e('Export Detailed CSV', 'profit-loss-report'); ?></button>
+            <button type="submit" class="button button-primary"><?php esc_html_e('Generate Report', 'product-profit'); ?></button>
+            <button type="submit" name="profit_report_export_csv" value="summary" class="button"><?php esc_html_e('Export Summary CSV', 'product-profit'); ?></button>
+            <button type="submit" name="profit_report_export_csv" value="detailed" class="button"><?php esc_html_e('Export Detailed CSV', 'product-profit'); ?></button>
         </form>
 
         <?php
@@ -77,11 +77,11 @@ function render_benefit_reports_page() {
 
         // Display overall totals
         echo '<div class="postbox">
-            <h2 class="hndle" style="margin: 18px 9px -5px 13px;">' . sprintf(esc_html__('Report from %s to %s', 'profit-loss-report'), esc_html($start_date), esc_html($end_date)) . '</h2>
+            <h2 class="hndle" style="margin: 18px 9px -5px 13px;">' . sprintf(esc_html__('Report from %s to %s', 'product-profit'), esc_html($start_date), esc_html($end_date)) . '</h2>
             <div class="inside">
-                <p><strong>' . esc_html__('Total Sales: ', 'profit-loss-report') . '</strong>' . wc_price(esc_html($benefit_data['total_sales'])) . ' | 
-                <strong>' . esc_html__('Total Buy Price: ', 'profit-loss-report') . '</strong>' . wc_price(esc_html($benefit_data['total_buy_price'])) . ' | 
-                <strong>' . esc_html__('Total Benefit: ', 'profit-loss-report') . '</strong>' . wc_price(esc_html($benefit_data['total_benefit'])) . '</p>
+                <p><strong>' . esc_html__('Total Sales: ', 'product-profit') . '</strong>' . wc_price(esc_html($benefit_data['total_sales'])) . ' | 
+                <strong>' . esc_html__('Total Buy Price: ', 'product-profit') . '</strong>' . wc_price(esc_html($benefit_data['total_buy_price'])) . ' | 
+                <strong>' . esc_html__('Total Benefit: ', 'product-profit') . '</strong>' . wc_price(esc_html($benefit_data['total_benefit'])) . '</p>
             </div>
         </div>';
 
@@ -93,17 +93,17 @@ function render_benefit_reports_page() {
         $offset = ($paged - 1) * $per_page;
         $product_benefits_page = array_slice($product_benefits, $offset, $per_page, true);
 
-        echo '<h3>' . esc_html__('Per-Product Benefit Report', 'profit-loss-report') . '</h3>';
+        echo '<h3>' . esc_html__('Per-Product Benefit Report', 'product-profit') . '</h3>';
         echo '<table class="wp-list-table widefat fixed striped">';
         echo '<thead>
             <tr>
-                <th>' . esc_html__('Product Image', 'profit-loss-report') . '</th>
-                <th>' . esc_html__('Product Name', 'profit-loss-report') . '</th>
-                <th>' . esc_html__('Quantity Sold', 'profit-loss-report') . '</th>
-                <th>' . esc_html__('Total Sales', 'profit-loss-report') . '</th>
-                <th>' . esc_html__('Total Buy Price', 'profit-loss-report') . '</th>
-                <th>' . esc_html__('Profit', 'profit-loss-report') . '</th>
-                <th>' . esc_html__('Edit', 'profit-loss-report') . '</th>
+                <th>' . esc_html__('Product Image', 'product-profit') . '</th>
+                <th>' . esc_html__('Product Name', 'product-profit') . '</th>
+                <th>' . esc_html__('Quantity Sold', 'product-profit') . '</th>
+                <th>' . esc_html__('Total Sales', 'product-profit') . '</th>
+                <th>' . esc_html__('Total Buy Price', 'product-profit') . '</th>
+                <th>' . esc_html__('Profit', 'product-profit') . '</th>
+                <th>' . esc_html__('Edit', 'product-profit') . '</th>
             </tr>
         </thead>';
         echo '<tbody>';
@@ -111,13 +111,13 @@ function render_benefit_reports_page() {
         // Loop through the sliced array for current page only
         foreach ($product_benefits_page as $product_id => $product_data) {
             echo '<tr>
-                <td>' . (has_post_thumbnail($product_id) ? get_the_post_thumbnail($product_id, [48, 48]) : esc_html__('No Image', 'profit-loss-report')) . '</td>
+                <td>' . (has_post_thumbnail($product_id) ? get_the_post_thumbnail($product_id, [48, 48]) : esc_html__('No Image', 'product-profit')) . '</td>
                 <td><a href="' . esc_url(get_permalink($product_id)) . '">' . esc_html($product_data['name']) . '</a></td>
                 <td>' . esc_html($product_data['quantity']) . '</td>
                 <td>' . wc_price($product_data['sales']) . '</td>
                 <td>' . wc_price($product_data['buy_price']) . '</td>
                 <td>' . wc_price($product_data['benefit']) . '</td>
-                <td><a href="' . esc_url(get_edit_post_link($product_id)) . '">' . esc_html__('Edit', 'profit-loss-report') . '</a></td>
+                <td><a href="' . esc_url(get_edit_post_link($product_id)) . '">' . esc_html__('Edit', 'product-profit') . '</a></td>
             </tr>';
         }
         echo '</tbody>';
@@ -139,8 +139,8 @@ function render_benefit_reports_page() {
                 'format'    => '',
                 'current'   => $paged,
                 'total'     => $total_pages,
-                'prev_text' => __('« Prev', 'profit-loss-report'),
-                'next_text' => __('Next »', 'profit-loss-report'),
+                'prev_text' => __('« Prev', 'product-profit'),
+                'next_text' => __('Next »', 'product-profit'),
             ));
             echo '</div>';
         }
