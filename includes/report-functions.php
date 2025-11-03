@@ -21,46 +21,67 @@ function save_buy_price_to_order_item($item, $cart_item_key, $values, $order) {
  */
 
 function render_benefit_reports_page() {
-    $end_date   = !empty($_GET['end_date']) ? sanitize_text_field($_GET['end_date']) : date('Y-m-d');
-    $start_date = !empty($_GET['start_date']) ? sanitize_text_field($_GET['start_date']) : date('Y-m-d', strtotime('-30 days'));
+    // Default values
+    $default_end_date = wp_date('Y-m-d');
+    $default_start_date = wp_date('Y-m-d', strtotime('-30 days'));
+    $default_category_id = 'all';
+    $default_sort_by = 'name';
+    $default_order = 'asc';
+
+    // Initialize with defaults
+    $end_date = $default_end_date;
+    $start_date = $default_start_date;
+    $category_id = $default_category_id;
+    $sort_by = $default_sort_by;
+    $order = $default_order;
+
+    // Check nonce if form was submitted
+    if (!empty($_GET['benefit_reports_nonce_field']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['benefit_reports_nonce_field'])), 'benefit_reports_nonce')) {
+        $end_date = !empty($_GET['end_date']) ? sanitize_text_field(wp_unslash($_GET['end_date'])) : $default_end_date;
+        $start_date = !empty($_GET['start_date']) ? sanitize_text_field(wp_unslash($_GET['start_date'])) : $default_start_date;
+        $category_id = isset($_GET['category']) ? sanitize_text_field(wp_unslash($_GET['category'])) : $default_category_id;
+        $sort_by = isset($_GET['sort_by']) ? sanitize_text_field(wp_unslash($_GET['sort_by'])) : $default_sort_by;
+        $order = isset($_GET['order']) ? sanitize_text_field(wp_unslash($_GET['order'])) : $default_order;
+    }
 
     // Get the current page from the URL (default is page 1).
     $paged    = isset($_GET['paged']) ? absint($_GET['paged']) : 1;
     $per_page = 10; // Number of products to display per page
-   
-        // Calculate the report data
-    $category_id = isset($_GET['category']) ? sanitize_text_field($_GET['category']) : 'all';
-    $sort_by = isset($_GET['sort_by']) ? sanitize_text_field($_GET['sort_by']) : 'name';
-    $order   = isset($_GET['order']) ? sanitize_text_field($_GET['order']) : 'asc';
-    
+
     $benefit_data     = calculate_benefit_report($start_date, $end_date, $category_id);
     $product_benefits = calculate_product_benefit_report($start_date, $end_date, $category_id, $sort_by, $order);
 
-    ?>
+?>
     <div class="wrap">
         <h1><?php esc_html_e('Profit Loss Report', 'product-profit'); ?></h1>
+        <!-- Rate this plugin -->
+        <div class="rate-plugin">
+            <a href="https://wordpress.org/plugins/product-profit/" target="_blank"><?php esc_html_e('Rate this plugin', 'product-profit'); ?></a>
+        </div>
+        <!-- Filter Form -->
         <form method="get" action="" style="margin: 10px 0px;">
             <input type="hidden" name="page" value="benefit-reports">
+            <?php wp_nonce_field('benefit_reports_nonce', 'benefit_reports_nonce_field'); ?>
             <label for="start_date"><?php esc_html_e('Start Date', 'product-profit'); ?></label>
             <input type="date" name="start_date" value="<?php echo esc_attr($start_date); ?>" required>
             <label for="end_date"><?php esc_html_e('End Date', 'product-profit'); ?></label>
-            <input type="date" name="end_date" value="<?php echo esc_attr( $end_date); ?>" required>
+            <input type="date" name="end_date" value="<?php echo esc_attr($end_date); ?>" required>
             <select name="category">
                 <option value="all"><?php esc_html_e('All Categories', 'product-profit'); ?></option>
                 <?php
                 $categories = get_terms(['taxonomy' => 'product_cat', 'hide_empty' => true]);
                 foreach ($categories as $category) {
-                    echo '<option value="' . esc_attr($category->term_id) . '" ' . selected(isset($_GET['category']) ? $_GET['category'] : '', $category->term_id, false) . '>' . esc_html($category->name) . '</option>';
+                    echo '<option value="' . esc_attr($category->term_id) . '" ' . selected($category_id, $category->term_id, false) . '>' . esc_html($category->name) . '</option>';
                 }
                 ?>
             </select>
             <label for="sort_by"><?php esc_html_e('Sort By', 'product-profit'); ?></label>
             <select name="sort_by">
-                <option <?php echo $sort_by == 'name' ? 'selected':''; ?> value="name"><?php esc_html_e('Product Name', 'product-profit'); ?></option>
-                <option <?php echo $sort_by == 'sales' ? 'selected':''; ?> value="sales"><?php esc_html_e('Total Sales', 'product-profit'); ?></option>
-                <option <?php echo $sort_by == 'buy_price' ? 'selected':''; ?> value="buy_price"><?php esc_html_e('Total Buy Price', 'product-profit'); ?></option>
-                <option <?php echo $sort_by == 'name' ? 'selected':''; ?> value="benefit"><?php esc_html_e('Profit', 'product-profit'); ?></option>
-                <option <?php echo $sort_by == 'quantity' ? 'selected':''; ?> value="quantity"><?php esc_html_e('Quantity Sold', 'product-profit'); ?></option>
+                <option <?php echo $sort_by == 'name' ? 'selected' : ''; ?> value="name"><?php esc_html_e('Product Name', 'product-profit'); ?></option>
+                <option <?php echo $sort_by == 'sales' ? 'selected' : ''; ?> value="sales"><?php esc_html_e('Total Sales', 'product-profit'); ?></option>
+                <option <?php echo $sort_by == 'buy_price' ? 'selected' : ''; ?> value="buy_price"><?php esc_html_e('Total Buy Price', 'product-profit'); ?></option>
+                <option <?php echo $sort_by == 'name' ? 'selected' : ''; ?> value="benefit"><?php esc_html_e('Profit', 'product-profit'); ?></option>
+                <option <?php echo $sort_by == 'quantity' ? 'selected' : ''; ?> value="quantity"><?php esc_html_e('Quantity Sold', 'product-profit'); ?></option>
             </select>
             <label for="order"><?php esc_html_e('Order', 'product-profit'); ?></label>
             <select name="order">
@@ -73,18 +94,18 @@ function render_benefit_reports_page() {
         </form>
 
         <?php
-     
+
 
         // Display overall totals
         echo '<div class="postbox">
         
-            <h2 class="hndle" style="margin: 18px 9px -5px 13px;">' . 
+            <h2 class="hndle" style="margin: 18px 9px -5px 13px;">' .
             // translators: %s is the start date, %s is the end date
             sprintf(esc_html__('Report from %1$s to %2$s', 'product-profit'), esc_html($start_date), esc_html($end_date)) . '</h2>
             <div class="inside">
-                <p><strong>' . esc_html__('Total Sales: ', 'product-profit') . '</strong>' . wc_price(esc_html($benefit_data['total_sales'])) . ' | 
-                <strong>' . esc_html__('Total Buy Price: ', 'product-profit') . '</strong>' . wc_price(esc_html($benefit_data['total_buy_price'])) . ' | 
-                <strong>' . esc_html__('Total Benefit: ', 'product-profit') . '</strong>' . wc_price(esc_html($benefit_data['total_benefit'])) . '</p>
+                <p><strong>' . esc_html__('Total Sales: ', 'product-profit') . '</strong>' . wp_kses_post(wc_price($benefit_data['total_sales'])) . ' | 
+                <strong>' . esc_html__('Total Buy Price: ', 'product-profit') . '</strong>' . wp_kses_post(wc_price($benefit_data['total_buy_price'])) . ' | 
+                <strong>' . esc_html__('Total Benefit: ', 'product-profit') . '</strong>' . wp_kses_post(wc_price($benefit_data['total_benefit'])) . '</p>
             </div>
         </div>';
 
@@ -117,9 +138,9 @@ function render_benefit_reports_page() {
                 <td>' . (has_post_thumbnail($product_id) ? get_the_post_thumbnail($product_id, [48, 48]) : esc_html__('No Image', 'product-profit')) . '</td>
                 <td><a href="' . esc_url(get_permalink($product_id)) . '">' . esc_html($product_data['name']) . '</a></td>
                 <td>' . esc_html($product_data['quantity']) . '</td>
-                <td>' . wc_price($product_data['sales']) . '</td>
-                <td>' . wc_price($product_data['buy_price']) . '</td>
-                <td>' . wc_price($product_data['benefit']) . '</td>
+                <td>' . wp_kses_post(wc_price($product_data['sales'])) . '</td>
+                <td>' . wp_kses_post(wc_price($product_data['buy_price'])) . '</td>
+                <td>' . wp_kses_post(wc_price($product_data['benefit'])) . '</td>
                 <td><a href="' . esc_url(get_edit_post_link($product_id)) . '">' . esc_html__('Edit', 'product-profit') . '</a></td>
             </tr>';
         }
@@ -137,19 +158,19 @@ function render_benefit_reports_page() {
             ]));
 
             echo '<div class="tablenav">';
-            echo paginate_links(array(
+            echo wp_kses_post(paginate_links(array(
                 'base'      => $page_link_base,
                 'format'    => '',
                 'current'   => $paged,
                 'total'     => $total_pages,
                 'prev_text' => __('« Prev', 'product-profit'),
                 'next_text' => __('Next »', 'product-profit'),
-            ));
+            )));
             echo '</div>';
         }
         ?>
     </div>
-    <?php
+<?php
 }
 
 /**
@@ -214,13 +235,13 @@ function calculate_product_benefit_report($start_date, $end_date, $category_id =
             $quantity = $item->get_quantity();
             $item_total = $item->get_total();
 
-           // Filter by category if specified
-           if ($category_id !== 'all') {
+            // Filter by category if specified
+            if ($category_id !== 'all') {
                 $product_categories = wp_get_post_terms($product_id, 'product_cat', ['fields' => 'ids']);
                 if (!in_array($category_id, $product_categories)) {
                     continue; // Skip products not in the selected category
                 }
-            }   
+            }
 
             if (!isset($product_benefits[$product_id])) {
                 $product_benefits[$product_id] = [
@@ -256,50 +277,54 @@ function calculate_product_benefit_report($start_date, $end_date, $category_id =
 /**
  * Export CSV Reports
  */
-if (!empty($_GET['profit_report_export_csv'])) {
-    $export_type = sanitize_text_field($_GET['profit_report_export_csv']);
-    $category_id = isset($_GET['category']) ? sanitize_text_field($_GET['category']) : 'all';
+if (!empty($_GET['profit_report_export_csv']) && !empty($_GET['benefit_reports_nonce_field']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['benefit_reports_nonce_field'])), 'benefit_reports_nonce')) {
+    $export_type = sanitize_text_field(wp_unslash($_GET['profit_report_export_csv']));
+    $category_id = isset($_GET['category']) ? sanitize_text_field(wp_unslash($_GET['category'])) : 'all';
 
-    $start_date  = !empty($_GET['start_date']) ? sanitize_text_field($_GET['start_date']) : date('Y-m-d', strtotime('-30 days'));
-    $end_date    = !empty($_GET['end_date']) ? sanitize_text_field($_GET['end_date']) : date('Y-m-d');
-
-    header('Content-Type: text/csv');
+    $start_date  = !empty($_GET['start_date']) ? sanitize_text_field(wp_unslash($_GET['start_date'])) : wp_date('Y-m-d', strtotime('-30 days'));
+    $end_date    = !empty($_GET['end_date']) ? sanitize_text_field(wp_unslash($_GET['end_date'])) : wp_date('Y-m-d');
 
     // Set file name based on export type
     $file_name = $export_type === 'summary' ? 'benefit-summary-report.csv' : 'benefit-detailed-report.csv';
-    header("Content-Disposition: attachment; filename=\"$file_name\"");
 
-    $output = fopen('php://output', 'w');
+    // Build CSV content
+    $csv_content = '';
 
     if ($export_type === 'summary') {
         // Export Summary Report
-        fputcsv($output, ['Date Range', 'Total Sales', 'Total Buy Price', 'Total Benefit']);
+        $csv_content .= "Date Range,Total Sales,Total Buy Price,Total Benefit\n";
 
         $benefit_data = calculate_benefit_report($start_date, $end_date, $category_id);
-        fputcsv($output, [
-            "$start_date to $end_date",
+        $csv_content .= sprintf(
+            '"%s to %s",%s,%s,%s',
+            $start_date,
+            $end_date,
             $benefit_data['total_sales'],
             $benefit_data['total_buy_price'],
             $benefit_data['total_benefit']
-        ]);
-
+        );
     } elseif ($export_type === 'detailed') {
         // Export Detailed Report
-        fputcsv($output, ['Product ID', 'Product Name', 'Quantity Sold', 'Total Sales', 'Total Buy Price', 'Profit']);
+        $csv_content .= "Product ID,Product Name,Quantity Sold,Total Sales,Total Buy Price,Profit\n";
 
         $product_benefits = calculate_product_benefit_report($start_date, $end_date, $category_id);
         foreach ($product_benefits as $product_id => $product_data) {
-            fputcsv($output, [
+            $csv_content .= sprintf(
+                '"%s","%s",%s,%s,%s,%s' . "\n",
                 $product_id,
                 $product_data['name'],
                 $product_data['quantity'],
                 $product_data['sales'],
                 $product_data['buy_price'],
                 $product_data['benefit']
-            ]);
+            );
         }
     }
 
-    fclose($output);
+    // Send headers and output
+    header('Content-Type: text/csv');
+    header("Content-Disposition: attachment; filename=\"$file_name\"");
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    echo $csv_content;
     exit;
 }

@@ -58,7 +58,17 @@ class WooCommerce_Benefit_Calculator {
     }
 
     public function save_buy_price_field($post_id) {
-        $buy_price = isset($_POST['_buy_price']) ? wc_clean($_POST['_buy_price']) : '';
+        // Verify nonce for security
+        if (!isset($_POST['woocommerce_meta_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['woocommerce_meta_nonce'])), 'woocommerce_save_data')) {
+            return;
+        }
+        
+        // Check user capabilities
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+        
+        $buy_price = isset($_POST['_buy_price']) ? sanitize_text_field(wp_unslash($_POST['_buy_price'])) : '';
         update_post_meta($post_id, '_buy_price', $buy_price);
     }
 }
@@ -77,8 +87,8 @@ function schedule_profit_summary_email() {
 
 add_action('send_profit_summary_email', 'send_profit_summary_email');
 function send_profit_summary_email() {
-    $end_date = date('Y-m-d');
-    $start_date = date('Y-m-d', strtotime('-7 days')); // Change the range for weekly/monthly
+    $end_date = wp_date('Y-m-d');
+    $start_date = wp_date('Y-m-d', strtotime('-7 days')); // Change the range for weekly/monthly
 
     $benefit_data = calculate_benefit_report($start_date, $end_date);
     $email_body = sprintf(
