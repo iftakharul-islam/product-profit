@@ -77,7 +77,10 @@ function render_benefit_reports_page() {
 
         // Display overall totals
         echo '<div class="postbox">
-            <h2 class="hndle" style="margin: 18px 9px -5px 13px;">' . sprintf(esc_html__('Report from %s to %s', 'product-profit'), esc_html($start_date), esc_html($end_date)) . '</h2>
+        
+            <h2 class="hndle" style="margin: 18px 9px -5px 13px;">' . 
+            // translators: %s is the start date, %s is the end date
+            sprintf(esc_html__('Report from %1$s to %2$s', 'product-profit'), esc_html($start_date), esc_html($end_date)) . '</h2>
             <div class="inside">
                 <p><strong>' . esc_html__('Total Sales: ', 'product-profit') . '</strong>' . wc_price(esc_html($benefit_data['total_sales'])) . ' | 
                 <strong>' . esc_html__('Total Buy Price: ', 'product-profit') . '</strong>' . wc_price(esc_html($benefit_data['total_buy_price'])) . ' | 

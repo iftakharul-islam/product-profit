@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name: WooCommerce Benefit Calculator
+ * Plugin Name: Product Profit Reporter
  * Description: Calculates product benefits, monthly profits, and provides detailed financial reports for WooCommerce stores.
- * Version: 1.0
+ * Version: 1.0.0
  * Author: ifatwp
- * Author URI:https://profiles.wordpress.org/webxpart/
+ * Author URI:https://profiles.wordpress.org/ifatwp/
  * Text Domain: product-profit
  * License: GPL2
  */
@@ -82,7 +82,8 @@ function send_profit_summary_email() {
 
     $benefit_data = calculate_benefit_report($start_date, $end_date);
     $email_body = sprintf(
-        __("Here is your profit summary for the period %s to %s:\n\nTotal Sales: %s\nTotal Buy Price: %s\nTotal Profit: %s", 'product-profit'),
+        // translators: %s is the start date, %s is the end date, %s is total sales, %s is total buy price, %s is total profit
+        __('Here is your profit summary for the period %1$s to %2$s:\n\nTotal Sales: %3$s\nTotal Buy Price: %4$s\nTotal Profit: %5$s', 'product-profit'),
         $start_date,
         $end_date,
         wc_price($benefit_data['total_sales']),
