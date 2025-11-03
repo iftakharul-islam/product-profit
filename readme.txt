@@ -1,15 +1,15 @@
 === Product Profit Reporter ===
 
 Contributors: ifatwp
-Tags: product profit, reports, ecommerce, analytics
+Tags: woocommerce, reports, analytics, profit, sales
 Requires at least: 5.6
-Requires PHP: 7.3
+Requires PHP: 7.4
 Tested up to: 6.8
 Stable Tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
-A comprehensive plugin that calculates product benefits, monthly profits, and provides detailed financial reports for your online store.
+The Product Profit plugin helps you track WooCommerce product profit and sales performance by calculating margins, costs, and overall profitability.
 
 == Description ==
 
@@ -132,7 +132,6 @@ By default, profit summary emails are sent weekly. You can modify this in the pl
 - ✨ CSV export functionality
 - ✨ Automated email reports
 - ✨ Admin dashboard integration
-- ✨ Order meta integration
 - ✨ Pagination support
 - ✨ Sorting options
 - ✨ Product image display
@@ -154,7 +153,7 @@ Initial release of the Product Profit Calculator plugin with comprehensive profi
 == Requirements ==
 
 - WordPress 5.6 or higher
-- PHP 7.3 or higher
+- PHP 7.4 or higher
 - WooCommerce 5.0 or higher
 - Active WooCommerce installation
 
@@ -164,7 +163,7 @@ This plugin is released under the GPL-2.0+ license. You can find a copy of the l
 
 == Support ==
 
-For support, feature requests, or bug reports, please visit the [plugin page](https://ifatwp.com) or create an issue on GitHub.
+For support, feature requests, or bug reports, please visit the [plugin page](https://github.com/iftakharul-islam/product-profit/issues/new) or create an issue on GitHub.
 
 ---
 
