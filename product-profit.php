@@ -22,6 +22,14 @@ class Product_Profit_Reporter_Calculator {
         add_action('woocommerce_product_options_pricing', [$this, 'add_buy_price_field']);
         add_action('woocommerce_process_product_meta', [$this, 'save_buy_price_field']);
         add_action('woocommerce_checkout_create_order_line_item', 'product_profit_reporter_save_buy_price_to_order_item', 10, 4);
+
+        // Quick Edit functionality
+        add_action('woocommerce_product_quick_edit_end', [$this, 'add_quick_edit_buy_price_field']);
+        add_action('woocommerce_product_bulk_edit_end', [$this, 'add_bulk_edit_buy_price_field']);
+        add_action('manage_product_posts_custom_column', [$this, 'add_buy_price_column_value'], 10, 2);
+        add_action('woocommerce_product_quick_edit_save', [$this, 'save_quick_edit_buy_price']);
+        add_action('woocommerce_product_bulk_edit_save', [$this, 'save_bulk_edit_buy_price']);
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_quick_edit_scripts']);
     }
 
     public function save_buy_price_to_order_item($item, $cart_item_key, $values, $order) {
@@ -71,6 +79,112 @@ class Product_Profit_Reporter_Calculator {
 
         $buy_price = isset($_POST['_product_profit_reporter_buy_price']) ? sanitize_text_field(wp_unslash($_POST['_product_profit_reporter_buy_price'])) : '';
         update_post_meta($post_id, '_product_profit_reporter_buy_price', $buy_price);
+    }
+
+    /**
+     * Add Buy Price field to Quick Edit
+     */
+    public function add_quick_edit_buy_price_field() {
+        ?>
+        <br class="clear" />
+        <label class="alignleft">
+            <span class="title"><?php esc_html_e('Buy Price', 'product-profit-reporter'); ?></span>
+            <span class="input-text-wrap">
+                <input type="text" name="_product_profit_reporter_buy_price" class="text buy_price" placeholder="<?php esc_attr_e('Buy price', 'product-profit-reporter'); ?>" value="">
+            </span>
+        </label>
+        <?php
+    }
+
+    /**
+     * Add Buy Price field to Bulk Edit
+     */
+    public function add_bulk_edit_buy_price_field() {
+        ?>
+        <label class="alignleft">
+            <span class="title"><?php esc_html_e('Buy Price', 'product-profit-reporter'); ?></span>
+            <span class="input-text-wrap">
+                <input type="text" name="_product_profit_reporter_buy_price" class="text buy_price" placeholder="<?php esc_attr_e('Leave blank to keep current', 'product-profit-reporter'); ?>" value="">
+            </span>
+        </label>
+        <?php
+    }
+
+    /**
+     * Add hidden buy price value to product column for JavaScript to use
+     */
+    public function add_buy_price_column_value($column, $post_id) {
+        if ($column === 'name') {
+            $buy_price = get_post_meta($post_id, '_product_profit_reporter_buy_price', true);
+            ?>
+            <div class="hidden" data-buy_price="<?php echo esc_attr($buy_price); ?>"></div>
+            <?php
+        }
+    }
+
+    /**
+     * Save Buy Price from Quick Edit
+     */
+    public function save_quick_edit_buy_price($product) {
+        // Verify nonce for security
+        if (!isset($_REQUEST['woocommerce_quick_edit_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_REQUEST['woocommerce_quick_edit_nonce'])), 'woocommerce_quick_edit_nonce')) {
+            return;
+        }
+
+        // Check user capabilities
+        if (!current_user_can('edit_products')) {
+            return;
+        }
+
+        $product_id = $product->get_id();
+
+        // Check if buy price is set in POST data
+        if (isset($_POST['_product_profit_reporter_buy_price'])) {
+            $buy_price = sanitize_text_field(wp_unslash($_POST['_product_profit_reporter_buy_price']));
+            update_post_meta($product_id, '_product_profit_reporter_buy_price', $buy_price);
+        }
+    }
+
+    /**
+     * Save Buy Price from Bulk Edit
+     */
+    public function save_bulk_edit_buy_price($product) {
+        // Verify nonce for security
+        if (!isset($_REQUEST['woocommerce_bulk_edit_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_REQUEST['woocommerce_bulk_edit_nonce'])), 'woocommerce_bulk_edit_nonce')) {
+            return;
+        }
+
+        // Check user capabilities
+        if (!current_user_can('edit_products')) {
+            return;
+        }
+
+        $product_id = $product->get_id();
+
+        // Only update if value is provided (not empty)
+        if (isset($_POST['_product_profit_reporter_buy_price']) && $_POST['_product_profit_reporter_buy_price'] !== '') {
+            $buy_price = sanitize_text_field(wp_unslash($_POST['_product_profit_reporter_buy_price']));
+            update_post_meta($product_id, '_product_profit_reporter_buy_price', $buy_price);
+        }
+    }
+
+    /**
+     * Enqueue JavaScript for Quick Edit functionality
+     */
+    public function enqueue_quick_edit_scripts($hook) {
+        // Only load on product list page
+        global $post_type;
+        if ($hook !== 'edit.php' || $post_type !== 'product') {
+            return;
+        }
+
+        wp_enqueue_script(
+            'product-profit-reporter-quick-edit',
+            plugin_dir_url(__FILE__) . 'assets/js/quick-edit.js',
+            ['jquery', 'inline-edit-post'],
+            '1.0.0',
+            true
+        );
     }
 }
 
