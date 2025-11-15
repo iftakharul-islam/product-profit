@@ -9,76 +9,81 @@ Stable Tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
-The Product Profit plugin helps you track WooCommerce product profit and sales performance by calculating margins, costs, and overall profitability.
+The Product Profit Reporter helps you track WooCommerce product profit and sales performance by calculating margins, costs, and overall profitability.
 
 == Description ==
 
-The Product Profit Calculator plugin helps you track your store's profitability by calculating profit margins, buy prices, and providing detailed financial reports. This essential tool gives you insights into your business performance and helps you make informed decisions about your product pricing and inventory.
+The Product Profit Reporter plugin helps you track your store's profitability by calculating profit margins, buy prices, and providing detailed financial reports. This essential tool gives you insights into your business performance and helps you make informed decisions about your product pricing and inventory.
 
 **Key Features:**
-- 📊 **Profit/Loss Reports**: Comprehensive financial reports with date range filtering
-- 💰 **Buy Price Tracking**: Track cost prices for each product
-- 📈 **Product-wise Analysis**: Detailed profit analysis per product
-- 📅 **Date Range Reports**: Generate reports for any time period
-- 📋 **Category Filtering**: Filter reports by product categories
-- 📊 **Sorting Options**: Sort by sales, profit, quantity, or product name
-- 📤 **CSV Export**: Export detailed and summary reports to CSV
-- 📧 **Email Reports**: Automated weekly profit summary emails
-- 🎯 **Per-Product Control**: Set buy prices for individual products
 
-== Features ==
+- Profit/Loss Reports: Comprehensive financial reports with date range filtering
+- Buy Price Tracking: Track cost prices for each product
+- Product-wise Analysis: Detailed profit analysis per product
+- Date Range Reports: Generate reports for any time period
+- Category Filtering: Filter reports by product categories
+- Sorting Options: Sort by sales, profit, quantity, or product name
+- CSV Export: Export detailed and summary reports to CSV
+- Email Reports: Automated weekly profit summary emails
+- Per-Product Control: Set buy prices for individual products
 
-### Core Functionality
-- **Buy Price Management**: Add and track cost prices for each product
-- **Profit Calculation**: Automatic calculation of profit margins
-- **Financial Reports**: Comprehensive profit/loss reporting
-- **Order Integration**: Buy prices automatically saved with orders
+**Core Functionality**
 
-### Reporting Features
-- **Overall Summary**: Total sales, buy prices, and profit for selected period
-- **Product Details**: Individual product profit analysis with quantities sold
-- **Category Filtering**: Filter reports by product categories
-- **Date Range Selection**: Customizable start and end dates
-- **Sorting Options**: Sort by product name, sales, profit, quantity, or buy price
-- **Pagination**: Handle large product catalogs efficiently
+- Buy Price Management: Add and track cost prices for each product
+- Profit Calculation: Automatic calculation of profit margins
+- Financial Reports: Comprehensive profit/loss reporting
+- Order Integration: Buy prices automatically saved with orders
 
-### Export & Communication
-- **CSV Export**: Export summary and detailed reports to CSV format
-- **Email Reports**: Automated weekly profit summary emails
-- **Admin Dashboard**: Easy-to-use admin interface under WooCommerce menu
+**Reporting Features**
 
-### Product Management
-- **Buy Price Field**: Add buy price field to product edit pages
-- **Order Meta**: Buy prices automatically saved with order items
-- **Product Images**: Display product thumbnails in reports
-- **Direct Links**: Quick access to edit products from reports
+- Overall Summary: Total sales, buy prices, and profit for selected period
+- Product Details: Individual product profit analysis with quantities sold
+- Category Filtering: Filter reports by product categories
+- Date Range Selection: Customizable start and end dates
+- Sorting Options: Sort by product name, sales, profit, quantity, or buy price
+- Pagination: Handle large product catalogs efficiently
+
+**Export & Communication**
+
+- CSV Export: Export summary and detailed reports to CSV format
+- Email Reports: Automated weekly profit summary emails
+- Admin Dashboard: Easy-to-use admin interface under WooCommerce menu
+
+**Product Management**
+
+- Buy Price Field: Add buy price field to product edit pages
+- Order Meta: Buy prices automatically saved with order items
+- Product Images: Display product thumbnails in reports
+- Direct Links: Quick access to edit products from reports
 
 == Installation ==
 
-1. Upload the `product-profit` folder to the `/wp-content/plugins/` directory.
+1. Upload the `product-profit-reporter` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Go to WooCommerce > Profit/Loss Report to access the reports.
 
-== Configuration ==
+**Setting Buy Prices**
 
-### Setting Buy Prices
 1. Edit any product in WooCommerce
 2. Look for the "Buy Price" field in the product data section
 3. Enter the cost price for the product
 4. Save the product
 
-### Generating Reports
-1. Navigate to **WooCommerce > Profit/Loss Report**
+**Generating Reports**
+
+1. Navigate to WooCommerce > Profit/Loss Report
 2. Select your desired date range
 3. Choose category filter (optional)
 4. Select sorting options
 5. Click "Generate Report"
 
-### Export Options
-- **Export Summary CSV**: Download overall totals
-- **Export Detailed CSV**: Download per-product breakdown
+**Export Options**
 
-### Email Reports
+- Export Summary CSV: Download overall totals
+- Export Detailed CSV: Download per-product breakdown
+
+**Email Reports**
+
 The plugin automatically sends weekly profit summary emails to the admin email address. You can modify the frequency in the plugin code.
 
 == Frequently Asked Questions ==
@@ -124,31 +129,33 @@ By default, profit summary emails are sent weekly. You can modify this in the pl
 = 1.0.0 - Initial Release =
 
 **Features:**
-- ✨ Comprehensive profit/loss reporting
-- ✨ Buy price tracking for products
-- ✨ Date range filtering
-- ✨ Category filtering
-- ✨ Product-wise profit analysis
-- ✨ CSV export functionality
-- ✨ Automated email reports
-- ✨ Admin dashboard integration
-- ✨ Pagination support
-- ✨ Sorting options
-- ✨ Product image display
+
+- Comprehensive profit/loss reporting
+- Buy price tracking for products
+- Date range filtering
+- Category filtering
+- Product-wise profit analysis
+- CSV export functionality
+- Automated email reports
+- Admin dashboard integration
+- Pagination support
+- Sorting options
+- Product image display
 
 **Technical Features:**
-- 🔧 WooCommerce integration
-- 📊 Financial calculations
-- 📧 Email automation
-- 📤 CSV export
-- 🎯 Admin interface
-- 📱 Responsive design
+
+- WooCommerce integration
+- Financial calculations
+- Email automation
+- CSV export
+- Admin interface
+- Responsive design
 
 == Upgrade Notice ==
 
 = 1.0.0 =
 
-Initial release of the Product Profit Calculator plugin with comprehensive profit tracking and reporting features.
+Initial release of the Product Profit Reporter plugin with comprehensive profit tracking and reporting features.
 
 == Requirements ==
 
@@ -167,4 +174,4 @@ For support, feature requests, or bug reports, please visit the [plugin page](ht
 
 ---
 
-**Made with ❤️ for the WordPress community**
+Made with care for the WordPress community
